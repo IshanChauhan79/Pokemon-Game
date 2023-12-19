@@ -1,0 +1,61 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "exportAsImage.useCurrentScale": true,
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "PalletTown.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 16,
+            "viewCenter": {
+                "x": 631,
+                "y": 12
+            }
+        },
+        "PalletTown.tmx#PalletTown": {
+            "dynamicWrapping": true,
+            "scaleInEditor": 1
+        },
+        "PalletTown.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 3,
+            "scaleInEditor": 1
+        },
+        "collision.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "C:/Users/Ishan Chauhan/Desktop/Coding/Pokemon Game/assets/gameAssets",
+    "last.externalTilesetPath": "C:/Users/Ishan Chauhan/Desktop/Coding/Pokemon Game/assets/gameAssets",
+    "last.imagePath": "C:/Users/Ishan Chauhan/Desktop/Coding/Pokemon Game/assets/gameAssets",
+    "map.height": 40,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 12,
+    "map.tileWidth": 12,
+    "map.width": 70,
+    "openFiles": [
+    ],
+    "project": "untitled.tiled-project",
+    "recentFiles": [
+        "collision.tsx",
+        "PalletTown.tmx",
+        "PalletTown.tsx"
+    ],
+    "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 12,
+        "width": 12
+    }
+}
