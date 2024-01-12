@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "PalletTown.tmx",
     "expandedProjectPaths": [
     ],
     "exportAsImage.useCurrentScale": true,
@@ -13,11 +13,11 @@
             "scaleInDock": 1
         },
         "PalletTown.tmx": {
-            "scale": 0.5,
-            "selectedLayer": 16,
+            "scale": 4,
+            "selectedLayer": 12,
             "viewCenter": {
-                "x": 631,
-                "y": 12
+                "x": 546.625,
+                "y": 151.75
             }
         },
         "PalletTown.tmx#PalletTown": {
@@ -28,6 +28,9 @@
             "dynamicWrapping": true,
             "scaleInDock": 3,
             "scaleInEditor": 1
+        },
+        "PalletTownTileSet.tsx": {
+            "scaleInDock": 1
         },
         "collision.tsx": {
             "dynamicWrapping": false,
@@ -45,11 +48,12 @@
     "map.tileWidth": 12,
     "map.width": 70,
     "openFiles": [
+        "PalletTown.tmx"
     ],
     "project": "untitled.tiled-project",
     "recentFiles": [
-        "collision.tsx",
         "PalletTown.tmx",
+        "collision.tsx",
         "PalletTown.tsx"
     ],
     "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",

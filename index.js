@@ -1,22 +1,57 @@
 import "./index.css";
-import "./player";
+import { palletTown, townBackground } from "./components/town";
+import { playerImage } from "./components/player";
+import { canvas, canvasContext } from "./components/canvas";
+import { keys } from "./utils/controller";
+import { boundaries } from "./components/boundary";
+import { checkIfCollision } from "./utils/checkIfCollision";
 
-const palletTown = new Image();
-palletTown.src = "/image/PalletTown.png";
-console.log("🚀 ~ file: index.js:3 ~ palletTown:", palletTown);
+const animate = () => {
+  townBackground.draw();
+  boundaries.forEach((boundary) => boundary.draw());
+  canvasContext.drawImage(
+    playerImage,
+    0,
+    0,
+    playerImage.width / 4,
+    playerImage.height,
+    canvas.width / 2 - playerImage.width / 4 / 2,
+    canvas.height / 2 - playerImage.height / 2,
+    playerImage.width / 4,
+    playerImage.height
+  );
+  if (keys.w.pressed && keys.lastKeyPressed === "w") {
+    if (townBackground.position.y < 0) {
+      townBackground.position.y += 3;
+    } else {
+      // console.log("moveplayer");
+    }
+  } else if (keys.s.pressed && keys.lastKeyPressed === "s") {
+    const yRemaining = palletTown.height - canvas.height;
+    if (-townBackground.position.y < yRemaining) {
+      townBackground.position.y -= 3;
+    } else {
+      // console.log("movePlayer");
+    }
+  } else if (keys.a.pressed && keys.lastKeyPressed === "a") {
+    if (townBackground.position.x < 0) {
+      townBackground.position.x += 3;
+    } else {
+      // console.log("movePlayer");
+    }
+  } else if (keys.d.pressed && keys.lastKeyPressed === "d") {
+    const xRemaining = palletTown.width - canvas.width;
+    if (-townBackground.position.x < xRemaining) {
+      townBackground.position.x -= 3;
+    } else {
+      // console.log("movePlayer");
+    }
+  }
 
-const canvas = document.getElementById("game-canvas");
-canvas.width = 1024;
-canvas.height = 576;
-
-const canvasContext = canvas.getContext("2d");
-
-palletTown.onload = () => {
-  canvasContext.drawImage(palletTown, -1800, -0);
+  // console.log("fps");
+  window.requestAnimationFrame(animate);
 };
-
-console.log("🚀 ~ file: index.js:6 ~ canvasContext:", canvasContext);
-console.log("🚀 ~ file: index.js:2 ~ canvas:", canvas);
+animate();
 
 // import './style.css'
 // import javascriptLogo from './javascript.svg'
