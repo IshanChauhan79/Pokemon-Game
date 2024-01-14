@@ -7,14 +7,16 @@ export class Boundary {
   static height = 48;
   constructor({ position }) {
     this.position = position;
+    this.width = 48;
+    this.height = 48;
   }
   draw() {
-    canvasContext.fillStyle = "rgba(255,0,0,0.2)";
+    canvasContext.fillStyle = "rgba(255,0,0,0.5)";
     canvasContext.fillRect(
       this.position.x,
       this.position.y,
-      Boundary.width,
-      Boundary.height
+      this.width,
+      this.height
     );
   }
 }
@@ -33,4 +35,3 @@ collisionsBlocks.forEach((row, i) => {
     }
   });
 });
-console.log("🚀 ~ boundaries:", boundaries);

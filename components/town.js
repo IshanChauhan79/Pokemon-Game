@@ -10,4 +10,6 @@ export const townBackground = new Sprite({
     x: backgroundOffset.x,
     y: backgroundOffset.y,
   },
+  width: 3360,
+  height: 1920,
 });

@@ -1,49 +1,109 @@
 import "./index.css";
-import { palletTown, townBackground } from "./components/town";
-import { playerImage } from "./components/player";
-import { canvas, canvasContext } from "./components/canvas";
+import { canvas } from "./components/canvas";
+import { townBackground } from "./components/town";
+import { player1 } from "./components/Player";
+import { Boundary, boundaries } from "./components/boundary";
 import { keys } from "./utils/controller";
-import { boundaries } from "./components/boundary";
 import { checkIfCollision } from "./utils/checkIfCollision";
 
+const moveables = [townBackground, ...boundaries];
+
+const shouldPlayerMove = (direction = { x: 0, y: 0 }) => {
+  for (let boundary of boundaries) {
+    if (
+      checkIfCollision({
+        block1: player1,
+        block2: {
+          ...boundary,
+          position: {
+            x: boundary.position.x + direction.x,
+            y: boundary.position.y + direction.y,
+          },
+        },
+      })
+    )
+      return false;
+  }
+  return true;
+};
+
 const animate = () => {
+  /**
+   * draw background on canvasd
+   */
   townBackground.draw();
-  boundaries.forEach((boundary) => boundary.draw());
-  canvasContext.drawImage(
-    playerImage,
-    0,
-    0,
-    playerImage.width / 4,
-    playerImage.height,
-    canvas.width / 2 - playerImage.width / 4 / 2,
-    canvas.height / 2 - playerImage.height / 2,
-    playerImage.width / 4,
-    playerImage.height
-  );
-  if (keys.w.pressed && keys.lastKeyPressed === "w") {
+
+  /**
+   * draw bounday on canvas
+   */
+  boundaries.forEach((boundary) => {
+    boundary.draw();
+  });
+
+  /**
+   * draw player on canvas
+   */
+  player1.draw();
+
+  /**
+   * Collisions detections
+   */
+
+  /**
+   * Movemet controls
+   */
+  if (
+    shouldPlayerMove({ x: 0, y: 3 }) &&
+    keys.w.pressed &&
+    keys.lastKeyPressed === "w"
+  ) {
+    // UPWARD
     if (townBackground.position.y < 0) {
-      townBackground.position.y += 3;
+      // move background
+      moveables.forEach((item) => (item.position.y += 3));
     } else {
+      // move player when screen end reached
       // console.log("moveplayer");
     }
-  } else if (keys.s.pressed && keys.lastKeyPressed === "s") {
-    const yRemaining = palletTown.height - canvas.height;
+  } else if (
+    shouldPlayerMove({ x: 0, y: -3 }) &&
+    keys.s.pressed &&
+    keys.lastKeyPressed === "s"
+  ) {
+    // DOWNWARD
+    const yRemaining = townBackground.image.height - canvas.height;
     if (-townBackground.position.y < yRemaining) {
-      townBackground.position.y -= 3;
+      // move background
+      moveables.forEach((item) => (item.position.y -= 3));
     } else {
+      // move player when screen end reached
       // console.log("movePlayer");
     }
-  } else if (keys.a.pressed && keys.lastKeyPressed === "a") {
+  } else if (
+    shouldPlayerMove({ x: 3, y: 0 }) &&
+    keys.a.pressed &&
+    keys.lastKeyPressed === "a"
+  ) {
+    // LEFTWARD
     if (townBackground.position.x < 0) {
-      townBackground.position.x += 3;
+      // move background
+      moveables.forEach((item) => (item.position.x += 3));
     } else {
+      // move player when screen end reached
       // console.log("movePlayer");
     }
-  } else if (keys.d.pressed && keys.lastKeyPressed === "d") {
-    const xRemaining = palletTown.width - canvas.width;
+  } else if (
+    shouldPlayerMove({ x: -3, y: 0 }) &&
+    keys.d.pressed &&
+    keys.lastKeyPressed === "d"
+  ) {
+    // RIGHTWARD
+    const xRemaining = townBackground.image.width - canvas.width;
+    // move background
     if (-townBackground.position.x < xRemaining) {
-      townBackground.position.x -= 3;
+      moveables.forEach((item) => (item.position.x -= 3));
     } else {
+      // move player when screen end reached
       // console.log("movePlayer");
     }
   }
