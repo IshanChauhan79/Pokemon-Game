@@ -5,8 +5,10 @@ import { player1 } from "./components/Player";
 import { Boundary, boundaries } from "./components/boundary";
 import { keys } from "./utils/controller";
 import { checkIfCollision } from "./utils/checkIfCollision";
+import { foreground } from "./components/foreground";
+import { Clock } from "./components/Clock";
 
-const moveables = [townBackground, ...boundaries];
+const moveables = [townBackground, ...boundaries, foreground];
 
 const shouldPlayerMove = (direction = { x: 0, y: 0 }) => {
   for (let boundary of boundaries) {
@@ -28,6 +30,7 @@ const shouldPlayerMove = (direction = { x: 0, y: 0 }) => {
 };
 
 const animate = () => {
+  Clock.calculateElapsedTime();
   /**
    * draw background on canvasd
    */
@@ -46,6 +49,11 @@ const animate = () => {
   player1.draw();
 
   /**
+   * draw foreground objects above player
+   */
+  foreground.draw();
+
+  /**
    * Collisions detections
    */
 
@@ -53,20 +61,21 @@ const animate = () => {
    * Movemet controls
    */
   if (
-    shouldPlayerMove({ x: 0, y: 3 }) &&
+    shouldPlayerMove({ x: 0, y: 200 * Clock.deltaTime }) &&
     keys.w.pressed &&
     keys.lastKeyPressed === "w"
   ) {
     // UPWARD
     if (townBackground.position.y < 0) {
       // move background
-      moveables.forEach((item) => (item.position.y += 3));
+      moveables.forEach((item) => (item.position.y += 200 * Clock.deltaTime));
     } else {
       // move player when screen end reached
       // console.log("moveplayer");
     }
+    player1.moving = true;
   } else if (
-    shouldPlayerMove({ x: 0, y: -3 }) &&
+    shouldPlayerMove({ x: 0, y: -200 * Clock.deltaTime }) &&
     keys.s.pressed &&
     keys.lastKeyPressed === "s"
   ) {
@@ -74,26 +83,28 @@ const animate = () => {
     const yRemaining = townBackground.image.height - canvas.height;
     if (-townBackground.position.y < yRemaining) {
       // move background
-      moveables.forEach((item) => (item.position.y -= 3));
+      moveables.forEach((item) => (item.position.y -= 200 * Clock.deltaTime));
     } else {
       // move player when screen end reached
       // console.log("movePlayer");
     }
+    player1.moving = true;
   } else if (
-    shouldPlayerMove({ x: 3, y: 0 }) &&
+    shouldPlayerMove({ x: 200 * Clock.deltaTime, y: 0 }) &&
     keys.a.pressed &&
     keys.lastKeyPressed === "a"
   ) {
     // LEFTWARD
     if (townBackground.position.x < 0) {
       // move background
-      moveables.forEach((item) => (item.position.x += 3));
+      moveables.forEach((item) => (item.position.x += 200 * Clock.deltaTime));
     } else {
       // move player when screen end reached
       // console.log("movePlayer");
     }
+    player1.moving = true;
   } else if (
-    shouldPlayerMove({ x: -3, y: 0 }) &&
+    shouldPlayerMove({ x: -200 * Clock.deltaTime, y: 0 }) &&
     keys.d.pressed &&
     keys.lastKeyPressed === "d"
   ) {
@@ -101,11 +112,14 @@ const animate = () => {
     const xRemaining = townBackground.image.width - canvas.width;
     // move background
     if (-townBackground.position.x < xRemaining) {
-      moveables.forEach((item) => (item.position.x -= 3));
+      moveables.forEach((item) => (item.position.x -= 200 * Clock.deltaTime));
     } else {
       // move player when screen end reached
       // console.log("movePlayer");
     }
+    player1.moving = true;
+  } else {
+    player1.moving = false;
   }
 
   // console.log("fps");
