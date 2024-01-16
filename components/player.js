@@ -1,8 +1,14 @@
 import { Clock } from "./Clock";
 import { canvas, canvasContext } from "./canvas";
 
-export const player1Image = new Image();
-player1Image.src = "/images/playerDown.png";
+export const player1UpImage = new Image();
+player1UpImage.src = "/images/playerUp.png";
+export const player1DownImage = new Image();
+player1DownImage.src = "/images/playerDown.png";
+export const player1LeftImage = new Image();
+player1LeftImage.src = "/images/playerLeft.png";
+export const player1RightImage = new Image();
+player1RightImage.src = "/images/playerRight.png";
 
 export class Player {
   constructor({
@@ -14,12 +20,14 @@ export class Player {
     frames = { max: 1 },
     width = 0,
     height = 0,
+    sprites,
   }) {
     this.playerImage = playerImage;
     this.frames = { ...frames, val: 0, elapsed: 0 };
     this.width = width / this.frames.max;
     this.height = height;
     this.position = position;
+    this.sprites = sprites; //player moving direction image
 
     this.playerImage.onload = () => {
       this.width = this.playerImage.width / this.frames.max;
@@ -40,23 +48,23 @@ export class Player {
       this.width,
       playerImage.height
     );
-    if (this.moving) {
-      this.frames.elapsed += Clock.deltaTime;
-      if (this.frames.elapsed > 10 / 60) {
-        this.frames.elapsed = 0;
-        this.frames.val++;
-        if (this.frames.val >= this.frames.max) this.frames.val = 0;
-      }
-    } else {
+    if (!this.moving) {
       this.frames.val = 0;
+      return;
+    }
+    this.frames.elapsed += Clock.deltaTime;
+    if (this.frames.elapsed > 10 / 60) {
+      this.frames.elapsed = 0;
+      this.frames.val++;
+      if (this.frames.val >= this.frames.max) this.frames.val = 0;
     }
   }
 }
 
 export const player1 = new Player({
-  playerImage: player1Image,
+  playerImage: player1DownImage,
   position: {
-    x: canvas.width / 2 - 192 / 2,
+    x: canvas.width / 2 - 192 / 2 / 4,
     y: canvas.height / 2 - 68 / 2,
   },
   frames: {
@@ -64,4 +72,10 @@ export const player1 = new Player({
   },
   width: 192,
   height: 68,
+  sprites: {
+    up: player1UpImage,
+    down: player1DownImage,
+    left: player1LeftImage,
+    right: player1RightImage,
+  },
 });

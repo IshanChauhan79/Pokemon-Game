@@ -74,6 +74,7 @@ const animate = () => {
       // console.log("moveplayer");
     }
     player1.moving = true;
+    player1.playerImage = player1.sprites.up;
   } else if (
     shouldPlayerMove({ x: 0, y: -200 * Clock.deltaTime }) &&
     keys.s.pressed &&
@@ -89,6 +90,7 @@ const animate = () => {
       // console.log("movePlayer");
     }
     player1.moving = true;
+    player1.playerImage = player1.sprites.down;
   } else if (
     shouldPlayerMove({ x: 200 * Clock.deltaTime, y: 0 }) &&
     keys.a.pressed &&
@@ -103,13 +105,19 @@ const animate = () => {
       // console.log("movePlayer");
     }
     player1.moving = true;
+    player1.playerImage = player1.sprites.left;
   } else if (
     shouldPlayerMove({ x: -200 * Clock.deltaTime, y: 0 }) &&
     keys.d.pressed &&
     keys.lastKeyPressed === "d"
   ) {
     // RIGHTWARD
+    console.log(
+      "🚀 ~ animate ~ townBackground.position.x:",
+      townBackground.position.x
+    );
     const xRemaining = townBackground.image.width - canvas.width;
+    console.log("🚀 ~ animate ~ xRemaining:", xRemaining);
     // move background
     if (-townBackground.position.x < xRemaining) {
       moveables.forEach((item) => (item.position.x -= 200 * Clock.deltaTime));
@@ -118,6 +126,7 @@ const animate = () => {
       // console.log("movePlayer");
     }
     player1.moving = true;
+    player1.playerImage = player1.sprites.right;
   } else {
     player1.moving = false;
   }
