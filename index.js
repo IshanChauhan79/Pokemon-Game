@@ -35,6 +35,152 @@ const shouldPlayerMove = (direction = { x: 0, y: 0 }) => {
   return true;
 };
 
+const canvasCenterY = canvas.height / 2 - player1.playerImage.height / 2;
+const canvasCenterX = canvas.width / 2 - player1.playerImage.width / 8;
+
+const calculatePlayerMovements = () => {
+  // unfiorm for different fps monitors
+  const distanceCovered = 200 * Clock.deltaTime;
+
+  if (
+    shouldPlayerMove({ x: 0, y: distanceCovered }) &&
+    keys.w.pressed &&
+    keys.lastKeyPressed === "w"
+  ) {
+    /**
+     * playing moving UPWARD
+     */
+
+    // animation and image
+    player1.moving = true;
+    player1.playerImage = player1.sprites.up;
+
+    /**
+     * bring the player back to  center if in the bottom corner
+     */
+    if (player1.position.y > canvasCenterY) {
+      player1.position.y -= distanceCovered;
+      return;
+    }
+    /**
+     * move the background if player in center
+     */
+    if (townBackground.position.y < 0) {
+      moveables.forEach((item) => (item.position.y += distanceCovered));
+      return;
+    }
+
+    /**
+     * move player towards top
+     */
+    player1.position.y -= distanceCovered;
+  } else if (
+    shouldPlayerMove({ x: 0, y: -distanceCovered }) &&
+    keys.s.pressed &&
+    keys.lastKeyPressed === "s"
+  ) {
+    /**
+     * playing moving DOWNWARD
+     */
+
+    // animation and image
+    player1.moving = true;
+    player1.playerImage = player1.sprites.down;
+    /**
+     * bring the player back to  center if in the top corner
+     */
+    if (player1.position.y < canvasCenterY) {
+      player1.position.y += distanceCovered;
+      return;
+    }
+
+    /**
+     * move the background if player in center
+     */
+    const yRemaining = townBackground.image.height - canvas.height;
+    if (-townBackground.position.y < yRemaining) {
+      moveables.forEach((item) => (item.position.y -= distanceCovered));
+      return;
+    }
+
+    /**
+     * move player towards bottom
+     */
+    player1.position.y += distanceCovered;
+  } else if (
+    shouldPlayerMove({ x: distanceCovered, y: 0 }) &&
+    keys.a.pressed &&
+    keys.lastKeyPressed === "a"
+  ) {
+    /**
+     * playing moving LEFTWARD
+     */
+
+    // animation and image
+    player1.moving = true;
+    player1.playerImage = player1.sprites.left;
+    /**
+     * bring the player back to  center if in the right corner
+     */
+    if (player1.position.x > canvasCenterX) {
+      player1.position.x -= distanceCovered;
+      return;
+    }
+
+    /**
+     * move the background if player in center
+     */
+    if (townBackground.position.x < 0) {
+      moveables.forEach((item) => (item.position.x += distanceCovered));
+      return;
+    }
+
+    /**
+     * move player towards left
+     */
+
+    player1.position.x -= distanceCovered;
+  } else if (
+    shouldPlayerMove({ x: -distanceCovered, y: 0 }) &&
+    keys.d.pressed &&
+    keys.lastKeyPressed === "d"
+  ) {
+    /**
+     * playing moving RIGHTWARD
+     */
+
+    // animation and image
+    player1.moving = true;
+    player1.playerImage = player1.sprites.right;
+    /**
+     * bring the player back to  center if in the left corner
+     */
+    if (player1.position.x < canvasCenterX) {
+      player1.position.x += distanceCovered;
+      return;
+    }
+
+    /**
+     * move the background if player in center
+     */
+    const xRemaining = townBackground.image.width - canvas.width;
+
+    if (-townBackground.position.x < xRemaining) {
+      moveables.forEach((item) => (item.position.x -= distanceCovered));
+      return;
+    }
+
+    /**
+     * move player towards right
+     */
+
+    player1.position.x += distanceCovered;
+  } else {
+    // stop animation
+    player1.moving = false;
+  }
+};
+
 const animate = () => {
   Clock.calculateElapsedTime();
   /**
@@ -45,9 +191,9 @@ const animate = () => {
   /**
    * draw bounday on canvas
    */
-  boundaries.forEach((boundary) => {
-    boundary.draw();
-  });
+  // boundaries.forEach((boundary) => {
+  //   boundary.draw();
+  // });
 
   /**
    * draw player on canvas
@@ -66,71 +212,7 @@ const animate = () => {
   /**
    * Movemet controls
    */
-  if (
-    shouldPlayerMove({ x: 0, y: 200 * Clock.deltaTime }) &&
-    keys.w.pressed &&
-    keys.lastKeyPressed === "w"
-  ) {
-    // UPWARD
-    if (townBackground.position.y < 0) {
-      // move background
-      moveables.forEach((item) => (item.position.y += 200 * Clock.deltaTime));
-    } else {
-      // move player when screen end reached
-      // console.log("moveplayer");
-    }
-    player1.moving = true;
-    player1.playerImage = player1.sprites.up;
-  } else if (
-    shouldPlayerMove({ x: 0, y: -200 * Clock.deltaTime }) &&
-    keys.s.pressed &&
-    keys.lastKeyPressed === "s"
-  ) {
-    // DOWNWARD
-    const yRemaining = townBackground.image.height - canvas.height;
-    if (-townBackground.position.y < yRemaining) {
-      // move background
-      moveables.forEach((item) => (item.position.y -= 200 * Clock.deltaTime));
-    } else {
-      // move player when screen end reached
-      // console.log("movePlayer");
-    }
-    player1.moving = true;
-    player1.playerImage = player1.sprites.down;
-  } else if (
-    shouldPlayerMove({ x: 200 * Clock.deltaTime, y: 0 }) &&
-    keys.a.pressed &&
-    keys.lastKeyPressed === "a"
-  ) {
-    // LEFTWARD
-    if (townBackground.position.x < 0) {
-      // move background
-      moveables.forEach((item) => (item.position.x += 200 * Clock.deltaTime));
-    } else {
-      // move player when screen end reached
-      // console.log("movePlayer");
-    }
-    player1.moving = true;
-    player1.playerImage = player1.sprites.left;
-  } else if (
-    shouldPlayerMove({ x: -200 * Clock.deltaTime, y: 0 }) &&
-    keys.d.pressed &&
-    keys.lastKeyPressed === "d"
-  ) {
-    // RIGHTWARD
-    const xRemaining = townBackground.image.width - canvas.width;
-    // move background
-    if (-townBackground.position.x < xRemaining) {
-      moveables.forEach((item) => (item.position.x -= 200 * Clock.deltaTime));
-    } else {
-      // move player when screen end reached
-      // console.log("movePlayer");
-    }
-    player1.moving = true;
-    player1.playerImage = player1.sprites.right;
-  } else {
-    player1.moving = false;
-  }
+  calculatePlayerMovements();
 
   window.requestAnimationFrame(animate);
 };
