@@ -22,6 +22,12 @@ const shouldPlayerMove = (direction = { x: 0, y: 0 }) => {
             y: boundary.position.y + direction.y,
           },
         },
+        bufferSpace: {
+          leftBuffer: 10,
+          rightBuffer: 10,
+          bottomBuffer: 0,
+          topBuffer: 40,
+        },
       })
     )
       return false;
@@ -112,12 +118,7 @@ const animate = () => {
     keys.lastKeyPressed === "d"
   ) {
     // RIGHTWARD
-    console.log(
-      "🚀 ~ animate ~ townBackground.position.x:",
-      townBackground.position.x
-    );
     const xRemaining = townBackground.image.width - canvas.width;
-    console.log("🚀 ~ animate ~ xRemaining:", xRemaining);
     // move background
     if (-townBackground.position.x < xRemaining) {
       moveables.forEach((item) => (item.position.x -= 200 * Clock.deltaTime));
@@ -131,7 +132,6 @@ const animate = () => {
     player1.moving = false;
   }
 
-  // console.log("fps");
   window.requestAnimationFrame(animate);
 };
 animate();
