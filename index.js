@@ -2,13 +2,17 @@ import "./index.css";
 import { canvas } from "./components/canvas";
 import { townBackground } from "./components/town";
 import { player1 } from "./components/Player";
-import { Boundary, boundaries } from "./components/boundary";
+import { Boundary, battleZones, boundaries } from "./components/boundary";
 import { keys } from "./utils/controller";
 import { checkIfCollision } from "./utils/checkIfCollision";
 import { foreground } from "./components/foreground";
 import { Clock } from "./components/Clock";
 
-const moveables = [townBackground, ...boundaries, foreground];
+const moveables = [townBackground, ...boundaries, foreground, ...battleZones];
+
+/**
+ * Collisions detections
+ */
 
 const shouldPlayerMove = (direction = { x: 0, y: 0 }) => {
   for (let boundary of boundaries) {
@@ -35,6 +39,28 @@ const shouldPlayerMove = (direction = { x: 0, y: 0 }) => {
   return true;
 };
 
+const canBattleStart = () => {
+  for (let battleZone of battleZones) {
+    if (
+      checkIfCollision({
+        block1: battleZone,
+        block2: player1,
+        bufferSpace: {
+          leftBuffer: player1.width / 2,
+          rightBuffer: player1.width / 2,
+          bottomBuffer: player1.height,
+          topBuffer: player1.height / 3,
+        },
+      }) &&
+      Math.random() < 0.01
+    ) {
+      console.log("battle collision");
+      return true;
+    }
+  }
+  return false;
+};
+
 const canvasCenterY = canvas.height / 2 - player1.playerImage.height / 2;
 const canvasCenterX = canvas.width / 2 - player1.playerImage.width / 8;
 
@@ -50,6 +76,9 @@ const calculatePlayerMovements = () => {
     /**
      * playing moving UPWARD
      */
+
+    // can a battle start
+    canBattleStart();
 
     // animation and image
     player1.moving = true;
@@ -82,6 +111,9 @@ const calculatePlayerMovements = () => {
     /**
      * playing moving DOWNWARD
      */
+
+    // can a battle start
+    canBattleStart();
 
     // animation and image
     player1.moving = true;
@@ -116,9 +148,13 @@ const calculatePlayerMovements = () => {
      * playing moving LEFTWARD
      */
 
+    // can a battle start
+    canBattleStart();
+
     // animation and image
     player1.moving = true;
     player1.playerImage = player1.sprites.left;
+
     /**
      * bring the player back to  center if in the right corner
      */
@@ -148,6 +184,9 @@ const calculatePlayerMovements = () => {
     /**
      * playing moving RIGHTWARD
      */
+
+    // can a battle start
+    canBattleStart();
 
     // animation and image
     player1.moving = true;
@@ -194,6 +233,9 @@ const animate = () => {
   // boundaries.forEach((boundary) => {
   //   boundary.draw();
   // });
+  battleZones.forEach((zones) => {
+    zones.draw();
+  });
 
   /**
    * draw player on canvas
@@ -204,10 +246,6 @@ const animate = () => {
    * draw foreground objects above player
    */
   foreground.draw();
-
-  /**
-   * Collisions detections
-   */
 
   /**
    * Movemet controls

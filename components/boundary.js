@@ -1,4 +1,7 @@
-import { collisionsBlocks } from "../constants/collisions";
+import {
+  battleZonesCollisionsBlocks,
+  boundaryCollisionsBlocks,
+} from "../constants/collisions";
 import { backgroundOffset } from "../constants/helperConstants";
 import { canvasContext } from "./canvas";
 
@@ -20,11 +23,28 @@ export class Boundary {
     );
   }
 }
+
 export const boundaries = [];
-collisionsBlocks.forEach((row, i) => {
+boundaryCollisionsBlocks.forEach((row, i) => {
   row.forEach((tile, j) => {
     if (tile !== 0) {
       boundaries.push(
+        new Boundary({
+          position: {
+            x: j * Boundary.width + backgroundOffset.x,
+            y: i * Boundary.height + backgroundOffset.y,
+          },
+        })
+      );
+    }
+  });
+});
+
+export const battleZones = [];
+battleZonesCollisionsBlocks.forEach((row, i) => {
+  row.forEach((tile, j) => {
+    if (tile !== 0) {
+      battleZones.push(
         new Boundary({
           position: {
             x: j * Boundary.width + backgroundOffset.x,
