@@ -14,10 +14,10 @@
         },
         "PalletTown.tmx": {
             "scale": 4,
-            "selectedLayer": 14,
+            "selectedLayer": 15,
             "viewCenter": {
-                "x": 459.375,
-                "y": 272.25
+                "x": 220.625,
+                "y": 63.25
             }
         },
         "PalletTown.tmx#PalletTown": {
@@ -34,7 +34,7 @@
         },
         "collision.tsx": {
             "dynamicWrapping": false,
-            "scaleInDock": 1,
+            "scaleInDock": 1.5,
             "scaleInEditor": 1
         }
     },

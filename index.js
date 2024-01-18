@@ -2,11 +2,12 @@ import "./index.css";
 import { canvas } from "./components/canvas";
 import { townBackground } from "./components/town";
 import { player1 } from "./components/Player";
-import { Boundary, battleZones, boundaries } from "./components/boundary";
+import { battleZones, boundaries } from "./components/boundary";
 import { keys } from "./utils/controller";
 import { checkIfCollision } from "./utils/checkIfCollision";
 import { foreground } from "./components/foreground";
 import { Clock } from "./components/Clock";
+import { battle } from "./components/Battle";
 
 const moveables = [townBackground, ...boundaries, foreground, ...battleZones];
 
@@ -54,7 +55,8 @@ const canBattleStart = () => {
       }) &&
       Math.random() < 0.01
     ) {
-      console.log("battle collision");
+      // deactivate windows frame animate function during battle
+      battle.startBattleAnimation();
       return true;
     }
   }
@@ -221,6 +223,10 @@ const calculatePlayerMovements = () => {
 };
 
 const animate = () => {
+  const animationId = window.requestAnimationFrame(animate);
+  // save battle id in battle class
+  battle.animationId = animationId;
+
   Clock.calculateElapsedTime();
   /**
    * draw background on canvasd
@@ -230,9 +236,9 @@ const animate = () => {
   /**
    * draw bounday on canvas
    */
-  // boundaries.forEach((boundary) => {
-  //   boundary.draw();
-  // });
+  boundaries.forEach((boundary) => {
+    boundary.draw();
+  });
   battleZones.forEach((zones) => {
     zones.draw();
   });
@@ -248,13 +254,20 @@ const animate = () => {
   foreground.draw();
 
   /**
+   * Battle initiated
+   */
+  if (battle.initiated) {
+    player1.moving = false;
+    return;
+  }
+
+  /**
    * Movemet controls
    */
   calculatePlayerMovements();
-
-  window.requestAnimationFrame(animate);
 };
-animate();
+// animate();
+battle.startBattleAnimation();
 
 // import './style.css'
 // import javascriptLogo from './javascript.svg'
