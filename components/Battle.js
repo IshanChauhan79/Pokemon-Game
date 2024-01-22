@@ -1,5 +1,8 @@
 import gsap from "gsap";
 import { Sprite } from "./Sprite";
+import { draggle } from "./Pokemon/Draggle";
+import { emby } from "./Pokemon/Emby";
+import { Clock } from "./Clock";
 
 const battleBackgroundImage = new Image();
 battleBackgroundImage.src = "/images/battleBackground.png";
@@ -10,9 +13,11 @@ const battleBackground = new Sprite({
 });
 
 const animateBattle = () => {
+  Clock.calculateElapsedTime();
   const battleAnimationId = window.requestAnimationFrame(animateBattle);
   battleBackground.draw();
-  console.log("in battle mode");
+  draggle.draw();
+  emby.draw();
 };
 
 export class Battle {

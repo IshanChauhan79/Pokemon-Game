@@ -1,5 +1,10 @@
+* {
+  font-family: "Press Start 2P";
+  box-sizing: border-box;
+}
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Press Start 2P", Inter, system-ui, Avenir, Helvetica, Arial,
+    sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -17,6 +22,10 @@ body {
   overflow: hidden;
   background-color: black;
 }
+h1 {
+  margin: 0;
+  padding: 0;
+}
 #canvas-container {
   position: relative;
   display: inline-block;
@@ -27,6 +36,77 @@ body {
   position: absolute;
   opacity: 0;
   pointer-events: none;
+}
+#action-bar {
+  height: 100px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background-color: white;
+  border-top: 4px solid black;
+}
+#attacks {
+  width: 66.66%;
+  border-right: 4px solid black;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+#attacks button {
+  border: 0px;
+  font-size: 16px;
+}
+#attacks button:hover {
+  background-color: #ccc;
+  cursor: pointer;
+}
+#attack-type {
+  width: 33.33%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#attack-type > h1 {
+  font-size: 16px;
+}
+
+#embyHealth {
+  top: 50px;
+  left: 50px;
+}
+
+#draggleHealth {
+  bottom: 150px;
+  right: 50px;
+}
+.health-container {
+  background-color: white;
+  position: absolute;
+  width: 250px;
+  height: 80px;
+  border: 4px solid black;
+  padding: 15px;
+}
+.health-container h1 {
+  font-size: 16px;
+}
+
+.health-bar {
+  margin-top: 10px;
+  position: relative;
+}
+.gray-bar {
+  height: 5px;
+  background-color: #ccc;
+}
+.reamining-green-bar {
+  height: 5px;
+  background-color: green;
+  position: absolute;
+  inset: 0;
+  width: 50%;
 }
 
 /* #game-canvas {

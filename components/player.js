@@ -17,10 +17,11 @@ export class Player {
       x: 0,
       y: 0,
     },
-    frames = { max: 1 },
+    frames = { max: 1, hold: 10 / 60 },
     width = 0,
     height = 0,
     sprites,
+    animate = false,
   }) {
     this.playerImage = playerImage;
     this.frames = { ...frames, val: 0, elapsed: 0 };
@@ -33,7 +34,7 @@ export class Player {
       this.width = this.playerImage.width / this.frames.max;
       this.height = this.playerImage.height;
     };
-    this.moving = false;
+    this.animate = animate;
   }
   draw() {
     const { playerImage } = this;
@@ -48,12 +49,13 @@ export class Player {
       this.width,
       playerImage.height
     );
-    if (!this.moving) {
+    if (!this.animate) {
       this.frames.val = 0;
       return;
     }
+
     this.frames.elapsed += Clock.deltaTime;
-    if (this.frames.elapsed > 10 / 60) {
+    if (this.frames.elapsed > this.frames.hold) {
       this.frames.elapsed = 0;
       this.frames.val++;
       if (this.frames.val >= this.frames.max) this.frames.val = 0;
@@ -69,6 +71,7 @@ export const player1 = new Player({
   },
   frames: {
     max: 4,
+    hold: 10 / 60,
   },
   width: 192,
   height: 68,

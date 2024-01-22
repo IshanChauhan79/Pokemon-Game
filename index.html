@@ -5,11 +5,42 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokemon game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="canvas-container">
       <div id="overlay-div"></div>
       <canvas id="game-canvas"></canvas>
+      <div id="embyHealth" class="health-container">
+        <h1>Draggle</h1>
+        <div class="health-bar">
+          <div class="gray-bar"></div>
+          <div class="reamining-green-bar"></div>
+        </div>
+      </div>
+      <div id="draggleHealth" class="health-container">
+        <h1>Emby</h1>
+        <div class="health-bar">
+          <div class="gray-bar"></div>
+          <div class="reamining-green-bar"></div>
+        </div>
+      </div>
+      <div id="action-bar">
+        <div id="attacks">
+          <button>Attack 1</button>
+          <button>Attack 2</button>
+          <button>Attack 3</button>
+          <button>Attack 4</button>
+        </div>
+        <div id="attack-type">
+          <h1>Attack type</h1>
+        </div>
+      </div>
     </div>
     <script type="module" src="/index.js"></script>
   </body>

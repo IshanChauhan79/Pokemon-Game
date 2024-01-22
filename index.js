@@ -83,7 +83,7 @@ const calculatePlayerMovements = () => {
     canBattleStart();
 
     // animation and image
-    player1.moving = true;
+    player1.animate = true;
     player1.playerImage = player1.sprites.up;
 
     /**
@@ -118,7 +118,7 @@ const calculatePlayerMovements = () => {
     canBattleStart();
 
     // animation and image
-    player1.moving = true;
+    player1.animate = true;
     player1.playerImage = player1.sprites.down;
     /**
      * bring the player back to  center if in the top corner
@@ -154,7 +154,7 @@ const calculatePlayerMovements = () => {
     canBattleStart();
 
     // animation and image
-    player1.moving = true;
+    player1.animate = true;
     player1.playerImage = player1.sprites.left;
 
     /**
@@ -191,7 +191,7 @@ const calculatePlayerMovements = () => {
     canBattleStart();
 
     // animation and image
-    player1.moving = true;
+    player1.animate = true;
     player1.playerImage = player1.sprites.right;
     /**
      * bring the player back to  center if in the left corner
@@ -218,7 +218,7 @@ const calculatePlayerMovements = () => {
     player1.position.x += distanceCovered;
   } else {
     // stop animation
-    player1.moving = false;
+    player1.animate = false;
   }
 };
 
@@ -257,7 +257,7 @@ const animate = () => {
    * Battle initiated
    */
   if (battle.initiated) {
-    player1.moving = false;
+    player1.animate = false;
     return;
   }
 
