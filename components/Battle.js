@@ -3,6 +3,7 @@ import { Sprite } from "./Sprite";
 import { draggle } from "./Pokemon/Draggle";
 import { emby } from "./Pokemon/Emby";
 import { Clock } from "./Clock";
+import attacks from "./Pokemon/attacks";
 
 const battleBackgroundImage = new Image();
 battleBackgroundImage.src = "/images/battleBackground.png";
@@ -19,6 +20,15 @@ const animateBattle = () => {
   draggle.draw();
   emby.draw();
 };
+
+// event listener for attack buttons
+const attackButton = document.querySelectorAll(".attackButton");
+attackButton.forEach((button) => {
+  button.addEventListener("click", (e) => {
+    const attacktype = e.target.dataset.attacktype;
+    emby.attack({ attack: attacks[attacktype], recipient: draggle });
+  });
+});
 
 export class Battle {
   constructor({ initiated } = {}) {

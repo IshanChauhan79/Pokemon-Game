@@ -72,12 +72,12 @@ h1 {
   font-size: 16px;
 }
 
-#embyHealth {
+#enemy-health {
   top: 50px;
   left: 50px;
 }
 
-#draggleHealth {
+#our-health {
   bottom: 150px;
   right: 50px;
 }
@@ -97,16 +97,15 @@ h1 {
   margin-top: 10px;
   position: relative;
 }
-.gray-bar {
+.total-health {
   height: 5px;
   background-color: #ccc;
 }
-.reamining-green-bar {
+.reamining-health {
   height: 5px;
   background-color: green;
   position: absolute;
   inset: 0;
-  width: 50%;
 }
 
 /* #game-canvas {

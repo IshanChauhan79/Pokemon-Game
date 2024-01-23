@@ -13,4 +13,5 @@ export const draggle = new Player({
     hold: 30 / 60,
   },
   animate: true,
+  isEnemy: true,
 });

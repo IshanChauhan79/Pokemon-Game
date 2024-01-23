@@ -1,3 +1,4 @@
+import gsap from "gsap";
 import { Clock } from "./Clock";
 import { canvas, canvasContext } from "./canvas";
 
@@ -22,6 +23,7 @@ export class Player {
     height = 0,
     sprites,
     animate = false,
+    isEnemy = false,
   }) {
     this.playerImage = playerImage;
     this.frames = { ...frames, val: 0, elapsed: 0 };
@@ -35,9 +37,14 @@ export class Player {
       this.height = this.playerImage.height;
     };
     this.animate = animate;
+    this.opacity = 1;
+    this.health = 100;
+    this.isEnemy = isEnemy;
   }
   draw() {
     const { playerImage } = this;
+    canvasContext.save();
+    canvasContext.globalAlpha = this.opacity;
     canvasContext.drawImage(
       playerImage,
       this.frames.val * this.width,
@@ -49,6 +56,7 @@ export class Player {
       this.width,
       playerImage.height
     );
+    canvasContext.restore();
     if (!this.animate) {
       this.frames.val = 0;
       return;
@@ -59,6 +67,53 @@ export class Player {
       this.frames.elapsed = 0;
       this.frames.val++;
       if (this.frames.val >= this.frames.max) this.frames.val = 0;
+    }
+  }
+  attack({ attack, recipient }) {
+    const t1 = gsap.timeline();
+    const t2 = gsap.timeline();
+    let movementDistance = 20;
+    let healthSelector = "#enemy-health .reamining-health";
+    if (this.isEnemy) {
+      movementDistance = -movementDistance;
+      healthSelector = "#our-health .reamining-health";
+    }
+    switch (attack.name) {
+      case "Tackle": {
+        t1.to(this.position, {
+          x: this.position.x - movementDistance,
+        })
+          .to(this.position, {
+            x: this.position.x + movementDistance * 2,
+            duration: 0.1,
+            onComplete: () => {
+              this.health = Math.max(this.health - attack.damage, 0);
+              gsap.to(healthSelector, {
+                width: this.health + "%",
+              });
+              gsap.to(recipient.position, {
+                x: recipient.position.x + movementDistance / 2,
+                yoyo: true,
+                duration: 0.08,
+                repeat: 5,
+              });
+              gsap.to(recipient, {
+                opacity: 0,
+                repeat: 5,
+                yoyo: true,
+                duration: 0.08,
+              });
+            },
+          })
+          .to(this.position, {
+            x: this.position.x,
+          });
+      }
+      case "Fireball": {
+      }
+      default: {
+        return;
+      }
     }
   }
 }

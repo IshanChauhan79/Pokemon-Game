@@ -16,26 +16,28 @@
     <div id="canvas-container">
       <div id="overlay-div"></div>
       <canvas id="game-canvas"></canvas>
-      <div id="embyHealth" class="health-container">
+      <div id="enemy-health" class="health-container">
         <h1>Draggle</h1>
         <div class="health-bar">
-          <div class="gray-bar"></div>
-          <div class="reamining-green-bar"></div>
+          <div class="total-health"></div>
+          <div class="reamining-health"></div>
         </div>
       </div>
-      <div id="draggleHealth" class="health-container">
+      <div id="our-health" class="health-container">
         <h1>Emby</h1>
         <div class="health-bar">
-          <div class="gray-bar"></div>
-          <div class="reamining-green-bar"></div>
+          <div class="total-health"></div>
+          <div class="reamining-health"></div>
         </div>
       </div>
       <div id="action-bar">
         <div id="attacks">
-          <button>Attack 1</button>
-          <button>Attack 2</button>
-          <button>Attack 3</button>
-          <button>Attack 4</button>
+          <button class="attackButton" data-attacktype="Tackle">Tackle</button>
+          <button class="attackButton" data-attacktype="Fireball">
+            Fireball
+          </button>
+          <!-- <button class="attackButton">Attack 3</button>
+          <button class="attackButton">Attack 4</button> -->
         </div>
         <div id="attack-type">
           <h1>Attack type</h1>
