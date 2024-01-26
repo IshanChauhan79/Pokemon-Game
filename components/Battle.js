@@ -1,38 +1,49 @@
 import gsap from "gsap";
-import { Sprite } from "./Sprite";
 import { draggle } from "./Pokemon/Draggle";
 import { emby } from "./Pokemon/Emby";
 import { Clock } from "./Clock";
 import attacks from "./Pokemon/attacks";
-
-const battleBackgroundImage = new Image();
-battleBackgroundImage.src = "/images/battleBackground.png";
-
-const battleBackground = new Sprite({
-  position: { x: 0, y: 0 },
-  image: battleBackgroundImage,
-});
+import { dialogueBox } from "./DialogueBox";
+import { battleground } from "./BattleGround";
 
 const renderedSprites = {};
+
+const ourPokemon = emby;
+const enemyPokemon = draggle;
+
+emby.attacks.forEach((attk) => {
+  // attk
+});
 
 const animateBattle = () => {
   Clock.calculateElapsedTime();
   const battleAnimationId = window.requestAnimationFrame(animateBattle);
-  battleBackground.draw();
-  draggle.draw();
+  battleground.draw();
+  enemyPokemon.draw();
   Object.values(renderedSprites).forEach((sprite) => sprite.draw());
-  emby.draw();
+  ourPokemon.draw();
 };
+
+// queue for enemyPokemon attack
+const queue = [];
 
 // event listener for attack buttons
 const attackButton = document.querySelectorAll(".attackButton");
 attackButton.forEach((button) => {
   button.addEventListener("click", (e) => {
     const attacktype = e.target.dataset.attacktype;
-    emby.attack({
+    ourPokemon.attack({
       attack: attacks[attacktype],
-      recipient: draggle,
+      recipient: enemyPokemon,
       renderedSprites,
+    });
+    dialogueBox.show();
+    dialogueBox.queue.push(() => {
+      enemyPokemon.attack({
+        attack: attacks.Fireball,
+        recipient: ourPokemon,
+        renderedSprites,
+      });
     });
   });
 });

@@ -1,8 +1,10 @@
-import { Player } from "../Player";
+import { SLASH, TACKLE } from "../../constants/attacks";
+import { Monster } from "./Monster";
+import attacks from "./attacks";
 const draggleImage = new Image();
 draggleImage.src = "/images/draggleSprite.png";
 
-export const draggle = new Player({
+export const draggle = new Monster({
   position: {
     x: 800,
     y: 100,
@@ -14,4 +16,6 @@ export const draggle = new Player({
   },
   animate: true,
   isEnemy: true,
+  name: "Draggle",
+  attacks: [attacks[TACKLE], attacks[SLASH]],
 });

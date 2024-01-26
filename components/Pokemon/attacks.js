@@ -1,4 +1,10 @@
-import { FIREBALL, TACKLE, FIRE, PHYSICAL } from "../../constants/attacks";
+import {
+  FIREBALL,
+  TACKLE,
+  FIRE,
+  PHYSICAL,
+  SLASH,
+} from "../../constants/attacks";
 
 const attacks = {
   [TACKLE]: {
@@ -9,6 +15,11 @@ const attacks = {
   [FIREBALL]: {
     name: FIREBALL,
     type: FIRE,
+    damage: () => Math.floor(Math.random() * 4 * 10),
+  },
+  [SLASH]: {
+    name: SLASH,
+    type: PHYSICAL,
     damage: () => Math.floor(Math.random() * 4 * 10),
   },
 };

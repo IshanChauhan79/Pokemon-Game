@@ -1,8 +1,5 @@
-import gsap from "gsap";
 import { Clock } from "./Clock";
 import { canvas, canvasContext } from "./canvas";
-import { TACKLE, FIREBALL } from "../constants/attacks";
-import { startHitAnimation } from "../utils/startHitAnimation";
 
 export const player1UpImage = new Image();
 player1UpImage.src = "/images/playerUp.png";
@@ -12,9 +9,6 @@ export const player1LeftImage = new Image();
 player1LeftImage.src = "/images/playerLeft.png";
 export const player1RightImage = new Image();
 player1RightImage.src = "/images/playerRight.png";
-
-export const fireballImage = new Image();
-fireballImage.src = "/images/fireball.png";
 
 export class Player {
   constructor({
@@ -28,7 +22,6 @@ export class Player {
     height = 0,
     sprites,
     animate = false,
-    isEnemy = false,
     rotation = 0,
   }) {
     this.playerImage = playerImage;
@@ -44,8 +37,6 @@ export class Player {
     };
     this.animate = animate;
     this.opacity = 1;
-    this.health = 100;
-    this.isEnemy = isEnemy;
     this.rotation = rotation;
   }
   draw() {
@@ -86,78 +77,6 @@ export class Player {
       this.frames.elapsed = 0;
       this.frames.val++;
       if (this.frames.val >= this.frames.max) this.frames.val = 0;
-    }
-  }
-  attack({ attack, recipient, renderedSprites }) {
-    const t1 = gsap.timeline();
-    const t2 = gsap.timeline();
-    let movementDistance = 20;
-    let healthSelector = "#enemy-health .reamining-health";
-    let fireballRotation = 1;
-    if (this.isEnemy) {
-      movementDistance = -movementDistance;
-      fireballRotation = -2.2;
-      healthSelector = "#our-health .reamining-health";
-    }
-    switch (attack.name) {
-      case TACKLE: {
-        t1.to(this.position, {
-          x: this.position.x - movementDistance,
-        })
-          .to(this.position, {
-            x: this.position.x + movementDistance * 2,
-            duration: 0.1,
-            onComplete: () => {
-              startHitAnimation({
-                healthSelector,
-                recipient,
-                damage: attack.damage(),
-                movementDistance,
-              });
-            },
-          })
-          .to(this.position, {
-            x: this.position.x,
-          });
-        break;
-      }
-      case FIREBALL: {
-        const fireballSprite = new Player({
-          position: {
-            x: this.position.x,
-            y: this.position.y,
-          },
-          width: fireballImage.width,
-          height: fireballImage.height,
-          playerImage: fireballImage,
-          frames: {
-            max: 4,
-            hold: 10 / 60,
-          },
-          animate: true,
-          rotation: fireballRotation,
-        });
-        if (!renderedSprites[FIREBALL]) {
-          renderedSprites[FIREBALL] = fireballSprite;
-          gsap.to(fireballSprite.position, {
-            x: recipient.position.x,
-            y: recipient.position.y,
-            onComplete: () => {
-              delete renderedSprites[FIREBALL];
-              startHitAnimation({
-                healthSelector,
-                recipient,
-                damage: attack.damage(),
-                movementDistance,
-              });
-            },
-            duration: 1,
-          });
-        }
-      }
-      default: {
-        return;
-      }
     }
   }
 }

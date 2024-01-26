@@ -108,6 +108,22 @@ h1 {
   inset: 0;
 }
 
+#dialog-box {
+  position: absolute;
+  inset: 0;
+  background-color: white;
+  padding: 12px;
+  cursor: pointer;
+  display: none;
+}
+#continue-icon {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  pointer-events: none;
+  display: none;
+}
+
 /* #game-canvas {
   position: fixed;
   inset: 0;
