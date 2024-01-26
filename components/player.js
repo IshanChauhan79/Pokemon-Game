@@ -1,6 +1,8 @@
 import gsap from "gsap";
 import { Clock } from "./Clock";
 import { canvas, canvasContext } from "./canvas";
+import { TACKLE, FIREBALL } from "../constants/attacks";
+import { startHitAnimation } from "../utils/startHitAnimation";
 
 export const player1UpImage = new Image();
 player1UpImage.src = "/images/playerUp.png";
@@ -10,6 +12,9 @@ export const player1LeftImage = new Image();
 player1LeftImage.src = "/images/playerLeft.png";
 export const player1RightImage = new Image();
 player1RightImage.src = "/images/playerRight.png";
+
+export const fireballImage = new Image();
+fireballImage.src = "/images/fireball.png";
 
 export class Player {
   constructor({
@@ -24,6 +29,7 @@ export class Player {
     sprites,
     animate = false,
     isEnemy = false,
+    rotation = 0,
   }) {
     this.playerImage = playerImage;
     this.frames = { ...frames, val: 0, elapsed: 0 };
@@ -40,10 +46,23 @@ export class Player {
     this.opacity = 1;
     this.health = 100;
     this.isEnemy = isEnemy;
+    this.rotation = rotation;
   }
   draw() {
     const { playerImage } = this;
     canvasContext.save();
+    // rotation
+    canvasContext.translate(
+      this.position.x + this.width / 2,
+      this.position.y + this.height / 2
+    );
+    canvasContext.rotate(this.rotation);
+    canvasContext.translate(
+      -this.position.x - this.width / 2,
+      -this.position.y - this.height / 2
+    );
+
+    //opacity
     canvasContext.globalAlpha = this.opacity;
     canvasContext.drawImage(
       playerImage,
@@ -69,17 +88,19 @@ export class Player {
       if (this.frames.val >= this.frames.max) this.frames.val = 0;
     }
   }
-  attack({ attack, recipient }) {
+  attack({ attack, recipient, renderedSprites }) {
     const t1 = gsap.timeline();
     const t2 = gsap.timeline();
     let movementDistance = 20;
     let healthSelector = "#enemy-health .reamining-health";
+    let fireballRotation = 1;
     if (this.isEnemy) {
       movementDistance = -movementDistance;
+      fireballRotation = -2.2;
       healthSelector = "#our-health .reamining-health";
     }
     switch (attack.name) {
-      case "Tackle": {
+      case TACKLE: {
         t1.to(this.position, {
           x: this.position.x - movementDistance,
         })
@@ -87,29 +108,52 @@ export class Player {
             x: this.position.x + movementDistance * 2,
             duration: 0.1,
             onComplete: () => {
-              this.health = Math.max(this.health - attack.damage, 0);
-              gsap.to(healthSelector, {
-                width: this.health + "%",
-              });
-              gsap.to(recipient.position, {
-                x: recipient.position.x + movementDistance / 2,
-                yoyo: true,
-                duration: 0.08,
-                repeat: 5,
-              });
-              gsap.to(recipient, {
-                opacity: 0,
-                repeat: 5,
-                yoyo: true,
-                duration: 0.08,
+              startHitAnimation({
+                healthSelector,
+                recipient,
+                damage: attack.damage(),
+                movementDistance,
               });
             },
           })
           .to(this.position, {
             x: this.position.x,
           });
+        break;
       }
-      case "Fireball": {
+      case FIREBALL: {
+        const fireballSprite = new Player({
+          position: {
+            x: this.position.x,
+            y: this.position.y,
+          },
+          width: fireballImage.width,
+          height: fireballImage.height,
+          playerImage: fireballImage,
+          frames: {
+            max: 4,
+            hold: 10 / 60,
+          },
+          animate: true,
+          rotation: fireballRotation,
+        });
+        if (!renderedSprites[FIREBALL]) {
+          renderedSprites[FIREBALL] = fireballSprite;
+          gsap.to(fireballSprite.position, {
+            x: recipient.position.x,
+            y: recipient.position.y,
+            onComplete: () => {
+              delete renderedSprites[FIREBALL];
+              startHitAnimation({
+                healthSelector,
+                recipient,
+                damage: attack.damage(),
+                movementDistance,
+              });
+            },
+            duration: 1,
+          });
+        }
       }
       default: {
         return;

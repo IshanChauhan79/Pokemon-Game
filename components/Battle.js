@@ -13,11 +13,14 @@ const battleBackground = new Sprite({
   image: battleBackgroundImage,
 });
 
+const renderedSprites = {};
+
 const animateBattle = () => {
   Clock.calculateElapsedTime();
   const battleAnimationId = window.requestAnimationFrame(animateBattle);
   battleBackground.draw();
   draggle.draw();
+  Object.values(renderedSprites).forEach((sprite) => sprite.draw());
   emby.draw();
 };
 
@@ -26,7 +29,11 @@ const attackButton = document.querySelectorAll(".attackButton");
 attackButton.forEach((button) => {
   button.addEventListener("click", (e) => {
     const attacktype = e.target.dataset.attacktype;
-    emby.attack({ attack: attacks[attacktype], recipient: draggle });
+    emby.attack({
+      attack: attacks[attacktype],
+      recipient: draggle,
+      renderedSprites,
+    });
   });
 });
 
