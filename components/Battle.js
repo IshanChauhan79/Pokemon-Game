@@ -12,7 +12,11 @@ const ourPokemon = emby;
 const enemyPokemon = draggle;
 
 emby.attacks.forEach((attk) => {
-  // attk
+  const button = document.createElement("button");
+  button.innerHTML = attk.name;
+  button.setAttribute("data-attacktype", attk.name);
+  button.classList.add("attackButton");
+  document.getElementById("attacks").append(button);
 });
 
 const animateBattle = () => {
@@ -24,14 +28,12 @@ const animateBattle = () => {
   ourPokemon.draw();
 };
 
-// queue for enemyPokemon attack
-const queue = [];
-
 // event listener for attack buttons
 const attackButton = document.querySelectorAll(".attackButton");
 attackButton.forEach((button) => {
   button.addEventListener("click", (e) => {
     const attacktype = e.target.dataset.attacktype;
+    console.log("🚀 ~ button.addEventListener ~ attacktype:", attacktype);
     ourPokemon.attack({
       attack: attacks[attacktype],
       recipient: enemyPokemon,
@@ -40,7 +42,10 @@ attackButton.forEach((button) => {
     dialogueBox.show();
     dialogueBox.queue.push(() => {
       enemyPokemon.attack({
-        attack: attacks.Fireball,
+        attack:
+          enemyPokemon.attacks[
+            Math.floor(Math.random() * enemyPokemon.attacks.length)
+          ],
         recipient: ourPokemon,
         renderedSprites,
       });

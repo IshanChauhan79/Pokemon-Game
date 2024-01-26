@@ -1,7 +1,7 @@
 import gsap from "gsap";
 import { dialogueBox } from "../DialogueBox";
 import { Player } from "../Player";
-import { FIREBALL, TACKLE } from "../../constants/attacks";
+import { FIREBALL, SLASH, TACKLE } from "../../constants/attacks";
 import { startHitAnimation } from "../../utils/startHitAnimation";
 
 export const fireballImage = new Image();
@@ -29,6 +29,7 @@ export class Monster extends Player {
       healthSelector = "#our-health .reamining-health";
     }
     switch (attack.name) {
+      case SLASH:
       case TACKLE: {
         t1.to(this.position, {
           x: this.position.x - movementDistance,
@@ -89,6 +90,7 @@ export class Monster extends Player {
             duration: 1,
           });
         }
+        break;
       }
       default: {
         return;

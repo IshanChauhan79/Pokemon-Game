@@ -1,5 +1,6 @@
 import { FIREBALL, TACKLE } from "../../constants/attacks";
 import { Monster } from "./Monster";
+import attacks from "./attacks";
 const embyImage = new Image();
 embyImage.src = "/images/embySprite.png";
 
