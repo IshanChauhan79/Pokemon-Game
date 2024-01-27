@@ -3,6 +3,7 @@ import { dialogueBox } from "../DialogueBox";
 import { Player } from "../Player";
 import { FIREBALL, SLASH, TACKLE } from "../../constants/attacks";
 import { startHitAnimation } from "../../utils/startHitAnimation";
+import { endBattleAnimation } from "../../utils/battleAnimationHelpers";
 
 export const fireballImage = new Image();
 fireballImage.src = "/images/fireball.png";
@@ -26,7 +27,7 @@ export class Monster extends Player {
     if (this.isEnemy) {
       movementDistance = -movementDistance;
       fireballRotation = -2.2;
-      healthSelector = "#our-health .reamining-health";
+      healthSelector = "#player-health .reamining-health";
     }
     switch (attack.name) {
       case SLASH:
@@ -43,6 +44,13 @@ export class Monster extends Player {
                 recipient,
                 damage: attack.damage(),
                 movementDistance,
+                onComplete: () => {
+                  if (recipient.health <= 0) {
+                    this.faint({ recipient });
+                  } else {
+                    dialogueBox.showContinue(true);
+                  }
+                },
               });
             },
           })
@@ -83,7 +91,11 @@ export class Monster extends Player {
                 damage: attack.damage(),
                 movementDistance,
                 onComplete: () => {
-                  dialogueBox.showContinue(true);
+                  if (recipient.health <= 0) {
+                    this.faint({ recipient });
+                  } else {
+                    dialogueBox.showContinue(true);
+                  }
                 },
               });
             },
@@ -96,5 +108,31 @@ export class Monster extends Player {
         return;
       }
     }
+  }
+  faint({ recipient }) {
+    dialogueBox.reset(true);
+    dialogueBox.queue.push(() => {
+      dialogueBox.setDialogue(`${recipient.name} has fainted`, true);
+      gsap.to(recipient, {
+        opacity: 0,
+        onComplete: () => {
+          dialogueBox.queue.push(() => {
+            endBattleAnimation();
+          });
+        },
+      });
+    });
+    // second approch
+    // setTimeout(() => {
+    //   dialogueBox.setDialogue(`${recipient.name} has fainted`, true);
+    //   gsap.to(recipient, {
+    //     opacity: 0,
+    //     onComplete: () => {
+    //       dialogueBox.queue.push(() => {
+    //         endBattleAnimation();
+    //       });
+    //     },
+    //   });
+    // }, 1000);
   }
 }

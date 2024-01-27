@@ -23,14 +23,17 @@ export class Player {
     sprites,
     animate = false,
     rotation = 0,
+    src,
   }) {
-    this.playerImage = playerImage;
+    this.playerImage = playerImage || new Image();
+    if (src) {
+      this.playerImage.src = src;
+    }
     this.frames = { ...frames, val: 0, elapsed: 0 };
     this.width = width / this.frames.max;
     this.height = height;
     this.position = position;
     this.sprites = sprites; //player moving direction image
-
     this.playerImage.onload = () => {
       this.width = this.playerImage.width / this.frames.max;
       this.height = this.playerImage.height;

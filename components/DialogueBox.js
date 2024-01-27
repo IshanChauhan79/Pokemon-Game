@@ -20,6 +20,19 @@ class DialogueBox {
       this.continueIcon.style.display = "none";
     }
   }
+  allReset() {
+    this.queue = [];
+    this.continue = false;
+    this.element.style.display = "none";
+  }
+  reset(isContinue = false) {
+    this.queue = [];
+    if (isContinue) {
+      this.showContinue(isContinue);
+      return;
+    }
+    this.element.innerHTML = "";
+  }
 
   hide() {
     if (!this.continue) return;
@@ -32,9 +45,9 @@ class DialogueBox {
     this.element.innerHTML = "";
     this.showContinue(false);
   }
-  setDialogue(text) {
+  setDialogue(text, isContinue = false) {
     this.element.innerHTML = text;
-    this.showContinue(false);
+    this.showContinue(isContinue);
   }
 }
 

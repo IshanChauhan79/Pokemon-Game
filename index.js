@@ -8,6 +8,7 @@ import { checkIfCollision } from "./utils/checkIfCollision";
 import { foreground } from "./components/foreground";
 import { Clock } from "./components/Clock";
 import { battle } from "./components/Battle";
+import { AnimationHelper } from "./utils/AnimationHelper";
 
 const moveables = [townBackground, ...boundaries, foreground, ...battleZones];
 
@@ -223,10 +224,7 @@ const calculatePlayerMovements = () => {
 };
 
 const animate = () => {
-  const animationId = window.requestAnimationFrame(animate);
-  // save battle id in battle class
-  battle.animationId = animationId;
-
+  AnimationHelper.startWindowAnimation(animate);
   Clock.calculateElapsedTime();
   /**
    * draw background on canvasd
@@ -266,8 +264,13 @@ const animate = () => {
    */
   calculatePlayerMovements();
 };
-// animate();
-battle.startBattleAnimation();
+AnimationHelper.animationFunctions["town"] = () => {
+  battle.initiated = false;
+  player1.animate = true;
+  animate();
+};
+animate();
+// battle.startBattleAnimation();
 
 // import './style.css'
 // import javascriptLogo from './javascript.svg'
