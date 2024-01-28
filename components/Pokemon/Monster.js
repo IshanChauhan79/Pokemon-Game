@@ -4,6 +4,13 @@ import { Player } from "../Player";
 import { FIREBALL, SLASH, TACKLE } from "../../constants/attacks";
 import { startHitAnimation } from "../../utils/startHitAnimation";
 import { endBattleAnimation } from "../../utils/battleAnimationHelpers";
+import {
+  GameAudio,
+  FIREBALL_HIT,
+  INIT_FIREBALL,
+  TACKLE_HIT,
+  VICTORY,
+} from "../../utils/audio";
 
 export const fireballImage = new Image();
 fireballImage.src = "/images/fireball.png";
@@ -39,6 +46,7 @@ export class Monster extends Player {
             x: this.position.x + movementDistance * 2,
             duration: 0.1,
             onComplete: () => {
+              GameAudio.playAudio(TACKLE_HIT, false);
               startHitAnimation({
                 healthSelector,
                 recipient,
@@ -80,11 +88,13 @@ export class Monster extends Player {
         });
         if (!renderedSprites[FIREBALL]) {
           renderedSprites[FIREBALL] = fireballSprite;
+          GameAudio.playAudio(INIT_FIREBALL, false);
           gsap.to(fireballSprite.position, {
             x: recipient.position.x,
             y: recipient.position.y,
             onComplete: () => {
               delete renderedSprites[FIREBALL];
+              GameAudio.playAudio(FIREBALL_HIT, false);
               startHitAnimation({
                 healthSelector,
                 recipient,
@@ -113,6 +123,7 @@ export class Monster extends Player {
     dialogueBox.reset(true);
     dialogueBox.queue.push(() => {
       dialogueBox.setDialogue(`${recipient.name} has fainted`, true);
+      GameAudio.playAudio(VICTORY);
       gsap.to(recipient, {
         opacity: 0,
         onComplete: () => {

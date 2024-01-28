@@ -9,6 +9,7 @@ import { foreground } from "./components/foreground";
 import { Clock } from "./components/Clock";
 import { battle } from "./components/Battle";
 import { AnimationHelper } from "./utils/AnimationHelper";
+import { BATTLE, GameAudio, INIT_BATTLE } from "./utils/audio";
 
 const moveables = [townBackground, ...boundaries, foreground, ...battleZones];
 
@@ -58,6 +59,8 @@ const canBattleStart = () => {
     ) {
       // deactivate windows frame animate function during battle
       battle.startBattleAnimation();
+      GameAudio.playAudio(INIT_BATTLE);
+      GameAudio.playAudio(BATTLE);
       return true;
     }
   }
@@ -270,6 +273,7 @@ AnimationHelper.animationFunctions["town"] = () => {
   animate();
 };
 animate();
+GameAudio.startGameAudio();
 // battle.startBattleAnimation();
 
 // import './style.css'
