@@ -51,13 +51,19 @@ export class GameAudio {
   static clicked = false;
 
   static startGameAudio() {
-    window.addEventListener("click", () => {
+    const startAudio = () => {
       // map audio is default
       if (!this.clicked) {
         this.audio[MAP].play();
         this.clicked = true;
         this.currentPlaying = MAP;
       }
+    };
+    window.addEventListener("click", () => {
+      startAudio();
+    });
+    window.addEventListener("keydown", () => {
+      startAudio();
     });
   }
   static stopAudio() {
