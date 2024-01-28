@@ -237,9 +237,9 @@ const animate = () => {
   /**
    * draw bounday on canvas
    */
-  boundaries.forEach((boundary) => {
-    boundary.draw();
-  });
+  // boundaries.forEach((boundary) => {
+  //   boundary.draw();
+  // });
   battleZones.forEach((zones) => {
     zones.draw();
   });
