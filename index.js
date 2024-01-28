@@ -240,9 +240,9 @@ const animate = () => {
   // boundaries.forEach((boundary) => {
   //   boundary.draw();
   // });
-  battleZones.forEach((zones) => {
-    zones.draw();
-  });
+  // battleZones.forEach((zones) => {
+  //   zones.draw();
+  // });
 
   /**
    * draw player on canvas
